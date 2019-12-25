@@ -9,7 +9,7 @@ import com.ctrip.framework.apollo.spi.ConfigRegistry;
 
 /**
  * Entry point for client config use
- *
+ * 配置信息的管理类
  * @author Jason Song(song_s@ctrip.com)
  */
 public class ConfigService {

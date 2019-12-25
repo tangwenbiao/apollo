@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
+ * 注册一些apollo相关的处理类
  * @author Jason Song(song_s@ctrip.com)
  */
 public class ApolloConfigRegistrar implements ImportBeanDefinitionRegistrar {

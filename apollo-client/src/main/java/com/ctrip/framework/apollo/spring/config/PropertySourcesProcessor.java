@@ -54,6 +54,12 @@ public class PropertySourcesProcessor implements BeanFactoryPostProcessor, Envir
     return NAMESPACE_NAMES.putAll(order, namespaces);
   }
 
+  /**
+   * 处理的唯一事件节点
+   *
+   * @param beanFactory
+   * @throws BeansException
+   */
   @Override
   public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
     initializePropertySources();
@@ -65,6 +71,8 @@ public class PropertySourcesProcessor implements BeanFactoryPostProcessor, Envir
       //already initialized
       return;
     }
+    //应该是创建了一个spring的属性容器，容器名叫 ApplicationPropertySources，
+    //这有点说法，因为在ApplicationBootstrapPropertySources容器中，也做过相同的事情。
     CompositePropertySource composite = new CompositePropertySource(PropertySourcesConstants.APOLLO_PROPERTY_SOURCE_NAME);
 
     //sort by order asc
@@ -74,8 +82,9 @@ public class PropertySourcesProcessor implements BeanFactoryPostProcessor, Envir
     while (iterator.hasNext()) {
       int order = iterator.next();
       for (String namespace : NAMESPACE_NAMES.get(order)) {
+        //获取namespace下面的相关信息（属性，名称等），这个时间节点属性已经加载完毕了（本地or远程）。
         Config config = ConfigService.getConfig(namespace);
-
+        //将其添加spring 容器中，也就是composite
         composite.addPropertySource(configPropertySourceFactory.getConfigPropertySource(namespace, config));
       }
     }
@@ -101,6 +110,7 @@ public class PropertySourcesProcessor implements BeanFactoryPostProcessor, Envir
   }
 
   private void ensureBootstrapPropertyPrecedence(ConfigurableEnvironment environment) {
+    // 如果将一个propertySources加载到当前的environment中？ TODO
     MutablePropertySources propertySources = environment.getPropertySources();
 
     PropertySource<?> bootstrapPropertySource = propertySources

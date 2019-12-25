@@ -77,6 +77,7 @@ public class SpringValueDefinitionProcessor implements BeanDefinitionRegistryPos
 
     Multimap<String, SpringValueDefinition> springValueDefinitions = beanName2SpringValueDefinitions.get(beanRegistry);
 
+    //拿到所有的Bean定义，然后没搞清楚在处理什么问题。。。。
     String[] beanNames = beanRegistry.getBeanDefinitionNames();
     for (String beanName : beanNames) {
       BeanDefinition beanDefinition = beanRegistry.getBeanDefinition(beanName);

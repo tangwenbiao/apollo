@@ -5,6 +5,10 @@ import java.util.List;
 import com.ctrip.framework.apollo.Config;
 import com.google.common.collect.Lists;
 
+/**
+ * 负责组装property source
+ * 实际上就是自己 缓存了一份 property source
+ */
 public class ConfigPropertySourceFactory {
 
   private final List<ConfigPropertySource> configPropertySources = Lists.newLinkedList();

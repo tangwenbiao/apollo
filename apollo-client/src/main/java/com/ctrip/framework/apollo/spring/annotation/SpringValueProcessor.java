@@ -51,6 +51,9 @@ public class SpringValueProcessor extends ApolloProcessor implements BeanFactory
     beanName2SpringValueDefinitions = LinkedListMultimap.create();
   }
 
+  /**
+   *  第二时间节点
+   */
   @Override
   public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
       throws BeansException {
@@ -60,10 +63,14 @@ public class SpringValueProcessor extends ApolloProcessor implements BeanFactory
     }
   }
 
+  /**
+   * 第三时间节点，主要处理逻辑
+   */
   @Override
   public Object postProcessBeforeInitialization(Object bean, String beanName)
       throws BeansException {
     if (configUtil.isAutoUpdateInjectedSpringPropertiesEnabled()) {
+      //处理@Value注解
       super.postProcessBeforeInitialization(bean, beanName);
       processBeanPropertyValues(bean, beanName);
     }
@@ -85,6 +92,7 @@ public class SpringValueProcessor extends ApolloProcessor implements BeanFactory
     }
 
     for (String key : keys) {
+      //将反射相关
       SpringValue springValue = new SpringValue(key, value.value(), bean, beanName, field, false);
       springValueRegistry.register(beanFactory, key, springValue);
       logger.debug("Monitoring {}", springValue);
@@ -151,6 +159,10 @@ public class SpringValueProcessor extends ApolloProcessor implements BeanFactory
     beanName2SpringValueDefinitions.removeAll(beanName);
   }
 
+  /**
+   *  第一时间节点
+   *  只是单纯的拿到BeanFactory
+   *  */
   @Override
   public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
     this.beanFactory = beanFactory;

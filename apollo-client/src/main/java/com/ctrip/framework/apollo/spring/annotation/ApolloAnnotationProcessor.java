@@ -46,6 +46,7 @@ public class ApolloAnnotationProcessor extends ApolloProcessor {
       return;
     }
     Class<?>[] parameterTypes = method.getParameterTypes();
+    //打上述注解必须只有一个参数，并且参数类型必须是ConfigChangeEvent
     Preconditions.checkArgument(parameterTypes.length == 1,
         "Invalid number of parameters: %s for method: %s, should be 1", parameterTypes.length,
         method);
