@@ -70,8 +70,9 @@ public class SpringValueProcessor extends ApolloProcessor implements BeanFactory
   public Object postProcessBeforeInitialization(Object bean, String beanName)
       throws BeansException {
     if (configUtil.isAutoUpdateInjectedSpringPropertiesEnabled()) {
-      //处理@Value注解
+      //处理@Value注解，并不会初始化其中的值，应该是交给spring自己处理
       super.postProcessBeforeInitialization(bean, beanName);
+      //处理beanName2SpringValueDefinitions，这个没太搞明白
       processBeanPropertyValues(bean, beanName);
     }
     return bean;
@@ -92,8 +93,9 @@ public class SpringValueProcessor extends ApolloProcessor implements BeanFactory
     }
 
     for (String key : keys) {
-      //将反射相关
+      //将反射相关封装到SpringValue对象中，并将该对象注册到SpringValueRegistry中
       SpringValue springValue = new SpringValue(key, value.value(), bean, beanName, field, false);
+      //注册器会启动一个线程，清除那些非单例对象的注入
       springValueRegistry.register(beanFactory, key, springValue);
       logger.debug("Monitoring {}", springValue);
     }

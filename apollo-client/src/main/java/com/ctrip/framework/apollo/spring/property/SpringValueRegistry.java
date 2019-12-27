@@ -52,6 +52,7 @@ public class SpringValueRegistry {
           @Override
           public void run() {
             try {
+              //处理非单例对象被清除的情况，这个时候将会从注册列表中将其移除
               scanAndClean();
             } catch (Throwable ex) {
               ex.printStackTrace();
